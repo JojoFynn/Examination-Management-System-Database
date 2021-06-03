@@ -168,3 +168,32 @@ INSERT INTO Marks (course_code,score,type_of_score,user_ID) VALUES
 ('POE2024',75.0, 'high','Lecturer2017'),
 ('SD2023',19.0, 'low', 'MIS2019'),
 ('SD2023',19.0, 'low', 'Professor2019');
+/* Indexes */
+CREATE INDEX marksinfo
+ON Marks (score,user_ID);
+CREATE INDEX universityinfo
+ON University (university_name);
+CREATE INDEX  userinfo
+ON Users (user_ID,username);
+CREATE INDEX  coursesinfo
+ON Courses (course_name,paper_name,date_of_exam);
+/* Queries for Examination Database System */
+/* First query below satisfies the first functionality */
+Select username, user_ID FROM USERS order by username;
+/* Second query below satisfies the second functionality */
+Select user_ID, max(score) from Marks group by user_ID;
+/* Third query below satisfies the third functionality */
+Select users.username, courses.course_name from Courses
+INNER JOIN studentcourses on courses.user_ID = studentcourses.user_ID
+INNER JOIN Users on courses.user_ID = users.user_ID
+Group by courses.course_name
+UNION
+Select users.username, courses.course_name from Courses 
+INNER JOIN Users on courses.user_ID = users.user_ID Group by courses.course_name;
+/* Fourth query below satisfies the fourth functionality */
+Select university_name from university order by university_name;
+/* Fifth query below satisfies the fifth functionality */
+Select paper_name, date_of_exam from Courses order by paper_name;
+/* Sixth query below satisfies the sixth functionality */
+Select courses.course_name, avg(marks.score) from Courses
+INNER JOIN Marks on courses.course_code = marks.course_code group by courses.course_name;
